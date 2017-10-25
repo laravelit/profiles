@@ -1,0 +1,28 @@
+{
+	"name" : "laravelit/roles",
+	"description" : "Handling profiles and segments",
+	"keywords" : [
+		"profiles",
+		"segments",
+		"customers",
+		"providers",
+		"freelancers",
+		"jobseekers"
+	],
+	"license" : "MIT",
+	"version" : "0.0.4",
+	"authors" : [{
+			"name" : "Adel Lamallam",
+			"email" : "lamallam@afroware.com"
+		}
+	],
+	"require" : {
+		"php" : ">=5.5.9",
+		"illuminate/support" : "~5.5"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"Laravelit\\Profiles\\" : "src/"
+		}
+	}
+}
