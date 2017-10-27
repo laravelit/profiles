@@ -10,6 +10,13 @@ interface ProfileHasRelations
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function segments();
+    
+    /**
+     * Profile belongs to many spaces.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function spaces();
 
     /**
      * Profile belongs to many users.
@@ -40,4 +47,27 @@ interface ProfileHasRelations
      * @return int
      */
     public function detachAllSegments();
+    
+    /**
+     * Attach space to a profile.
+     *
+     * @param int|\Laravelit\Profiles\Models\Space $space
+     * @return int|bool
+     */
+    public function attachSpace($space);
+    
+    /**
+     * Detach space from a profile.
+     *
+     * @param int|\Laravelit\Profiles\Models\Space $space
+     * @return int
+     */
+    public function detachSpace($space);
+    
+    /**
+     * Detach all spaces.
+     *
+     * @return int
+     */
+    public function detachAllSpaces();
 }

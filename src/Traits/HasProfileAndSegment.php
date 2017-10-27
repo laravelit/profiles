@@ -49,13 +49,13 @@ trait HasProfileAndsegment
      * @param bool $all
      * @return bool
      */
-    public function is($profile, $all = false)
+    public function match($profile, $all = false)
     {
         if ($this->isPretendEnabled()) {
-            return $this->pretend('is');
+            return $this->pretend('match');
         }
 
-        return $this->{$this->getMethodName('is', $all)}($profile);
+        return $this->{$this->getMethodName('match', $all)}($profile);
     }
 
     /**
@@ -64,7 +64,7 @@ trait HasProfileAndsegment
      * @param int|string|array $profile
      * @return bool
      */
-    public function isOne($profile)
+    public function matchOne($profile)
     {
         foreach ($this->getArrayFrom($profile) as $profile) {
             if ($this->hasProfile($profile)) {
@@ -81,7 +81,7 @@ trait HasProfileAndsegment
      * @param int|string|array $profile
      * @return bool
      */
-    public function isAll($profile)
+    public function matchAll($profile)
     {
         foreach ($this->getArrayFrom($profile) as $profile) {
             if (!$this->hasProfile($profile)) {
@@ -142,16 +142,6 @@ trait HasProfileAndsegment
     }
 
     /**
-     * Get profile level of a user.
-     *
-     * @return int
-     */
-    public function level()
-    {
-        return ($profile = $this->getProfiles()->sortByDesc('level')->first()) ? $profile->level : 0;
-    }
-
-    /**
      * Get all segments from profiles.
      *
      * @return \Illuminate\Database\Eloquent\Builder
@@ -197,13 +187,13 @@ trait HasProfileAndsegment
      * @param bool $all
      * @return bool
      */
-    public function can($segment, $all = false)
+    public function enque($segment, $all = false)
     {
         if ($this->isPretendEnabled()) {
-            return $this->pretend('can');
+            return $this->pretend('enque');
         }
 
-        return $this->{$this->getMethodName('can', $all)}($segment);
+        return $this->{$this->getMethodName('enque', $all)}($segment);
     }
 
     /**
@@ -212,7 +202,7 @@ trait HasProfileAndsegment
      * @param int|string|array $segment
      * @return bool
      */
-    public function canOne($segment)
+    public function enqueOne($segment)
     {
         foreach ($this->getArrayFrom($segment) as $segment) {
             if ($this->hassegment($segment)) {
@@ -229,7 +219,7 @@ trait HasProfileAndsegment
      * @param int|string|array $segment
      * @return bool
      */
-    public function canAll($segment)
+    public function enqueAll($segment)
     {
         foreach ($this->getArrayFrom($segment) as $segment) {
             if (!$this->hassegment($segment)) {
@@ -246,55 +236,14 @@ trait HasProfileAndsegment
      * @param int|string $segment
      * @return bool
      */
-    public function hassegment($segment)
+    public function hasSegment($segment)
     {
         return $this->getsegments()->contains(function ($key, $value) use ($segment) {
             return $segment == $value->id || Str::is($segment, $value->slug);
         });
     }
 
-    /**
-     * Check if the user is allowed to manipulate with entity.
-     *
-     * @param string $providedsegment
-     * @param \Illuminate\Database\Eloquent\Model $entity
-     * @param bool $owner
-     * @param string $ownerColumn
-     * @return bool
-     */
-    public function allowed($providedsegment, Model $entity, $owner = true, $ownerColumn = 'user_id')
-    {
-        if ($this->isPretendEnabled()) {
-            return $this->pretend('allowed');
-        }
-
-        if ($owner === true && $entity->{$ownerColumn} == $this->id) {
-            return true;
-        }
-
-        return $this->isAllowed($providedsegment, $entity);
-    }
-
-    /**
-     * Check if the user is allowed to manipulate with provided entity.
-     *
-     * @param string $providedsegment
-     * @param \Illuminate\Database\Eloquent\Model $entity
-     * @return bool
-     */
-    protected function isAllowed($providedsegment, Model $entity)
-    {
-        foreach ($this->getsegments() as $segment) {
-            if ($segment->model != '' && get_class($entity) == $segment->model
-                && ($segment->id == $providedsegment || $segment->slug === $providedsegment)
-            ) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
+    
     /**
      * Attach segment to a user.
      *
@@ -384,14 +333,11 @@ trait HasProfileAndsegment
      */
     public function __call($method, $parameters)
     {
-        if (starts_with($method, 'is')) {
-            return $this->is(snake_case(substr($method, 2), config('profiles.separator')));
-        } elseif (starts_with($method, 'can')) {
-            return $this->can(snake_case(substr($method, 3), config('profiles.separator')));
-        } elseif (starts_with($method, 'allowed')) {
-            return $this->allowed(snake_case(substr($method, 7), config('profiles.separator')), $parameters[0], (isset($parameters[1])) ? $parameters[1] : true, (isset($parameters[2])) ? $parameters[2] : 'user_id');
+        if (starts_with($method, 'match')) {
+        	return $this->match(snake_case(substr($method, 2), config('profiles.separator')));
+        } elseif (starts_with($method, 'enque')) {
+        	return $this->enque(snake_case(substr($method, 3), config('profiles.separator')));
         }
-
         return parent::__call($method, $parameters);
     }
 }

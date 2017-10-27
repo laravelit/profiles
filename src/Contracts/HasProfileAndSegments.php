@@ -21,29 +21,29 @@ interface HasProfileAndSegments
     public function getProfiles();
 
     /**
-     * Check if the user has a profile or profiles.
+     * Check if the user match a profile or profiles.
      *
      * @param int|string|array $profile
      * @param bool $all
      * @return bool
      */
-    public function is($profile, $all = false);
+    public function match($profile, $all = false);
 
     /**
-     * Check if the user has all profiles.
+     * Check if the user match all profiles.
      *
      * @param int|string|array $profile
      * @return bool
      */
-    public function isAll($profile);
+    public function matchAll($profile);
 
     /**
-     * Check if the user has at least one profile.
+     * Check if the user match at least one profile.
      *
      * @param int|string|array $profile
      * @return bool
      */
-    public function isOne($profile);
+    public function matchOne($profile);
 
     /**
      * Check if the user has profile.
@@ -76,13 +76,7 @@ interface HasProfileAndSegments
      */
     public function detachAllProfiles();
 
-    /**
-     * Get profile level of a user.
-     *
-     * @return int
-     */
-    public function level();
-
+   
     /**
      * Get all segments from profiles.
      *
@@ -111,7 +105,7 @@ interface HasProfileAndSegments
      * @param bool $all
      * @return bool
      */
-    public function can($segment, $all = false);
+    public function enque($segment, $all = false);
 
     /**
      * Check if the user has all segments.
@@ -119,7 +113,7 @@ interface HasProfileAndSegments
      * @param int|string|array $segment
      * @return bool
      */
-    public function canAll($segment);
+    public function enqueAll($segment);
 
     /**
      * Check if the user has at least one segment.
@@ -127,7 +121,7 @@ interface HasProfileAndSegments
      * @param int|string|array $segment
      * @return bool
      */
-    public function canOne($segment);
+    public function enqueOne($segment);
 
     /**
      * Check if the user has a segment.
@@ -137,17 +131,7 @@ interface HasProfileAndSegments
      */
     public function hasSegment($segment);
 
-    /**
-     * Check if the user is allowed to manipulate with entity.
-     *
-     * @param string $providedSegment
-     * @param \Illuminate\Database\Eloquent\Model $entity
-     * @param bool $owner
-     * @param string $ownerColumn
-     * @return bool
-     */
-    public function allowed($providedSegment, Model $entity, $owner = true, $ownerColumn = 'user_id');
-
+  
     /**
      * Attach segment to a user.
      *

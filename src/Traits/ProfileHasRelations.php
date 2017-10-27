@@ -23,6 +23,16 @@ trait ProfileHasRelations
     {
         return $this->belongsToMany(config('auth.model'))->withTimestamps();
     }
+    
+    /**
+     * Profile belongs to many spaces.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function spaces()
+    {
+    	return $this->belongsToMany(config('spaces.models.space'))->withTimestamps();
+    }
 
     /**
      * Attach segment to a profile.
@@ -54,5 +64,34 @@ trait ProfileHasRelations
     public function detachAllSegments()
     {
         return $this->segments()->detach();
+    }
+    
+    /**
+     * Attach space to a profile.
+     *
+     * @param int|\Laravelit\Profiles\Models\Space $space
+     * @return int|bool
+     */
+    public function attachSpace($space){
+    	return (!$this->spaces()->get()->contains($space)) ? $this->spaces()->attach($space) : true;
+    }
+    
+    /**
+     * Detach space from a profile.
+     *
+     * @param int|\Laravelit\Profiles\Models\Space $space
+     * @return int
+     */
+    public function detachSpace($space){
+    	return $this->spaces()->detach($space);
+    }
+    
+    /**
+     * Detach all spaces.
+     *
+     * @return int
+     */
+    public function detachAllSpaces(){
+    	return $this->spaces()->detach();
     }
 }
