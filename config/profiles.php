@@ -62,7 +62,7 @@ return [
     |
     */
 
-    'pretend' => [
+    'pretend_profiles' => [
 
         'enabled' => false,
 

@@ -51,8 +51,8 @@ trait HasProfileAndsegment
      */
     public function match($profile, $all = false)
     {
-        if ($this->isPretendEnabled()) {
-            return $this->pretend('match');
+        if ($this->isPretendRolesEnabled()) {
+            return $this->pretendRoles('match');
         }
 
         return $this->{$this->getMethodName('match', $all)}($profile);
@@ -189,8 +189,8 @@ trait HasProfileAndsegment
      */
     public function enque($segment, $all = false)
     {
-        if ($this->isPretendEnabled()) {
-            return $this->pretend('enque');
+        if ($this->isPretendProfilesEnabled()) {
+            return $this->pretendProfiles('enque');
         }
 
         return $this->{$this->getMethodName('enque', $all)}($segment);
@@ -285,9 +285,9 @@ trait HasProfileAndsegment
      *
      * @return bool
      */
-    private function isPretendEnabled()
+    private function isPretendProfilesEnabled()
     {
-        return (bool) config('profiles.pretend.enabled');
+        return (bool) config('profiles.pretend_profiles.enabled');
     }
 
     /**
@@ -296,9 +296,9 @@ trait HasProfileAndsegment
      * @param string $option
      * @return bool
      */
-    private function pretend($option)
+    private function pretendProfiles($option)
     {
-        return (bool) config('profiles.pretend.options.' . $option);
+        return (bool) config('profiles.pretend_profiles.options.' . $option);
     }
 
     /**
